@@ -1,5 +1,5 @@
 {
-  "name": "Liri",
+  "name": "liri",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Mhoward1934/Liri/issues"
   },
-  "homepage": "https://github.com/Mhoward1934/Liri#readme"
+  "homepage": "https://github.com/Mhoward1934/Liri#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^6.1.0",
+    "node-spotify-api": "^1.0.7"
+  }
 }
