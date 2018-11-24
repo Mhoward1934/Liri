@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 var keys = require("/Users/monroehowardii/Desktop/homework/Liri/keys.js");
+var axios = require("axios");
 var fs = require("fs");
 var request = require("request");
 var moment = require("moment");
@@ -9,14 +10,14 @@ var spotify = new Spotify(keys.spotify);
 var liriReturn = process.argv[2];
 var movieName = process.argv[3];
 
-var getArtistNames = function(artist) {
+var getArtistNames = function (artist) {
     return artist.name;
 };
 
-var getMyBand = function(artist) {
+var getMyBand = function (artist) {
     var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
 
-    request(queryUrl,function (error,response,body) {
+    request(queryUrl, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var jsonData = JSON.parse(body);
 
@@ -29,54 +30,66 @@ var getMyBand = function(artist) {
 
             for (let i = 0; i < jsonData.length; i++) {
                 var show = jsonData[i];
-                
+
                 console.log(
                     show.venue.city +
                     "," +
                     (show.venue.region || show.venue.country) +
                     " at " +
-                    show.venue.name + 
+                    show.venue.name +
                     " " +
                     moment(show.datetime).format("MM/DD/YYYY")
                 );
-                
+
             }
         }
     })
 }
 
-function getSpotify(song) {
-    if (song === undefined || song === " ") {
-        song = "Bills, Bills, Bills"
-    };
+//     var queryUrl2 = ("GET", "https://api.spotify.com/v1/tracks/" + song);
+//     console.log(queryUrl2)
 
-    spotify.search({
-        type: "track",
-        query: song
-    },
-    function (err, data) {
-        if (err) {
-            console.log("Error occurred: " + err);
-            return;
-        }
-        var songs = data.tracks.items[0];
+//     request(queryUrl2, function (error, response, body) {
+var getSpotify = function (song) {
+    axios
+        .get("https://api.spotify.com/v1/tracks/id=" + process.env.SPOTIFY_ID)
+        .then(function (response) {
+            console.log(response.data);
 
-        for (let i = 0; i < songs.length; i++) {
-            console.log("Number: ", i, "/", songs.length);
-            console.log("Artist(s): " + songs[i].artists.map(getArtistNames));
-            console.log("Song Name: " + song[i].name);
-            console.log("Preview Song: " + song[i].preview_url);
-            console.log("Album Name: " + song[i].album.name);
-            console.log("------------------------------");
+            if (song === undefined || song === " ") {
+                song = "Kiss"
+            };
 
-        }
-    })
-};
+            spotify.search({
+                type: "track",
+                query: song
+            },
+                axios.catch(function (err, data) {
+                    if (err) {
+                        console.log("Error occurred: " + err);
+                        return;
+                    }
+                    var songs = data.tracks.items[0];
+
+                    for (let i = 0; i < songs.length; i++) {
+                        console.log("Number: ", i, "/", songs.length);
+                        console.log("Artist(s): " + songs[i].artists.map(getArtistNames));
+                        console.log("Song Name: " + song[i].name);
+                        console.log("Preview Song: " + song[i].preview_url);
+                        console.log("Album Name: " + song[i].album.name);
+                        console.log("------------------------------");
+
+                    }
+                })
+            )
+        })
+}
+
 
 function getMovie(movie) {
 
     if (movie === undefined || movie === " ") {
-        movie = "The Matrix"
+        movie = "The Color Purple"
     };
 
     const queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
@@ -92,8 +105,8 @@ function getMovie(movie) {
             console.log("Language: " + jsonData.Language);
             console.log("Plot: " + jsonData.Plot);
             console.log("Actors: " + jsonData.Actors);
-            if(!jsonData.Ratings[1]) {
-            } else {console.log("Rotten Tomatoes Rating: " + jsonData.Ratings[1].Value)};
+            if (!jsonData.Ratings[1]) {
+            } else { console.log("Rotten Tomatoes Rating: " + jsonData.Ratings[1].Value) };
             console.log("------------------------------------------------------------------");
         }
     })
@@ -102,7 +115,7 @@ function getMovie(movie) {
 function followFileCommads() {
     let commands;
     let parameter;
-    
+
     fs.readFile("random.txt", "utf8", function (error, data) {
         if (error) {
             return console.log(error);
