@@ -1,14 +1,13 @@
 require("dotenv").config();
 
-var keys = require("/Users/monroehowardii/Desktop/homework/Liri/keys.js");
-var axios = require("axios");
+var keys = require("./keys.js");
 var fs = require("fs");
 var request = require("request");
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
-var liriReturn = process.argv[2];
-var movieName = process.argv[3];
+//var liriReturn = process.argv[2];
+//var movieName = process.argv[3];
 
 var getArtistNames = function (artist) {
     return artist.name;
@@ -46,12 +45,8 @@ var getMyBand = function (artist) {
     })
 }
 
-//     var queryUrl2 = ("GET", "https://api.spotify.com/v1/tracks/" + song);
-//     console.log(queryUrl2)
-
-//     request(queryUrl2, function (error, response, body) {
-var getSpotify = function (song) {
-
+function getSpotify(song) {
+    console.log(song);
     if (song === undefined || song === " ") {
         song = "Kiss"
     };
@@ -65,14 +60,14 @@ var getSpotify = function (song) {
                 console.log("Error occurred: " + err);
                 return;
             }
-            var songs = data.tracks.items[0];
+            var songs = data.tracks.items;
 
             for (let i = 0; i < songs.length; i++) {
                 console.log("Number: ", i, "/", songs.length);
                 console.log("Artist(s): " + songs[i].artists.map(getArtistNames));
-                console.log("Song Name: " + song[i].name);
-                console.log("Preview Song: " + song[i].preview_url);
-                console.log("Album Name: " + song[i].album.name);
+                console.log("Song Name: " + songs[i].name);
+                console.log("Preview Song: " + songs[i].preview_url);
+                console.log("Album Name: " + songs[i].album.name);
                 console.log("------------------------------");
 
             }
