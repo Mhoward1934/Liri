@@ -51,37 +51,31 @@ var getMyBand = function (artist) {
 
 //     request(queryUrl2, function (error, response, body) {
 var getSpotify = function (song) {
-    axios
-        .get("https://api.spotify.com/v1/tracks/id=" + process.env.SPOTIFY_ID)
-        .then(function (response) {
-            console.log(response.data);
 
-            if (song === undefined || song === " ") {
-                song = "Kiss"
-            };
+    if (song === undefined || song === " ") {
+        song = "Kiss"
+    };
 
-            spotify.search({
-                type: "track",
-                query: song
-            },
-                axios.catch(function (err, data) {
-                    if (err) {
-                        console.log("Error occurred: " + err);
-                        return;
-                    }
-                    var songs = data.tracks.items[0];
+    spotify.search({
+        type: "track",
+        query: song
+    },
+        function (err, data) {
+            if (err) {
+                console.log("Error occurred: " + err);
+                return;
+            }
+            var songs = data.tracks.items[0];
 
-                    for (let i = 0; i < songs.length; i++) {
-                        console.log("Number: ", i, "/", songs.length);
-                        console.log("Artist(s): " + songs[i].artists.map(getArtistNames));
-                        console.log("Song Name: " + song[i].name);
-                        console.log("Preview Song: " + song[i].preview_url);
-                        console.log("Album Name: " + song[i].album.name);
-                        console.log("------------------------------");
+            for (let i = 0; i < songs.length; i++) {
+                console.log("Number: ", i, "/", songs.length);
+                console.log("Artist(s): " + songs[i].artists.map(getArtistNames));
+                console.log("Song Name: " + song[i].name);
+                console.log("Preview Song: " + song[i].preview_url);
+                console.log("Album Name: " + song[i].album.name);
+                console.log("------------------------------");
 
-                    }
-                })
-            )
+            }
         })
 }
 
