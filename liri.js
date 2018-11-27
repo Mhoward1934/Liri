@@ -2,19 +2,21 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 var fs = require("fs");
+var axios = require("axios");
 var request = require("request");
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
+//var movieName = new movieName(keys.ombd);
+var movieNames = process.argv[3];
 //var liriReturn = process.argv[2];
-//var movieName = process.argv[3];
 
 var getArtistNames = function (artist) {
     return artist.name;
 };
 
 var getMyBand = function (artist) {
-    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=" + process.env;
 
     request(queryUrl, function (error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -81,7 +83,7 @@ function getMovie(movie) {
         movie = "The Color Purple"
     };
 
-    const queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+    const queryUrl = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
     request(queryUrl, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var jsonData = JSON.parse(body);

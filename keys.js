@@ -9,3 +9,7 @@ exports.ombd = {
     key: process.env.OMBd_API_Keys
 };
 
+exports.bands = {
+    keys: process.env.BANDS_IN_TOWN
+};
+
