@@ -18,11 +18,11 @@
   },
   "homepage": "https://github.com/Mhoward1934/Liri#readme",
   "dependencies": {
-    "axios": "^0.18.0",
-    "dotenv": "^6.1.0",
+    "axios": "^0.18.1",
+    "dotenv": "^6.2.0",
     "fs": "0.0.1-security",
-    "moment": "^2.22.2",
-    "node-spotify-api": "^1.0.7",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1",
     "request": "^2.88.0"
   }
 }
